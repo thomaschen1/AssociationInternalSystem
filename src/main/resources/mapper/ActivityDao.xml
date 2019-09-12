@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.thomaschen.twoidea.dao.activityDao">
+
+    <!-- 插入新活动 -->
+    <insert id="addActivity" keyColumn="ID">
+        insert into activity(activityID,activity_name,activity_type,functionaary,telephone_number,start_time,end_time,location)
+        values (#{activityID},#{name},#{type},#{functionaary},#{phoneNumber},#{starTime},#{endTime},#{location});
+    </insert>
+
+    <!-- 删除活动 -->
+    <delete id="deleteActivity" parameterType="java.lang.Long">
+        delete from activity
+        where ID = #{id}
+        ID >= 0;
+    </delete>
+
+    <!-- 根据id查询活动信息 -->
+    <select id="queryByIdOnActivity" resultType="manage_activity" parameterType="java.lang.Long">
+        select *
+        from activity
+        where ID = #{id};
+    </select>
+
+    <!-- 根据偏移量查询活动数据列 -->
+    <select id="queryAllOnActivity" resultType="manage_activity">
+       select *
+       from activity
+       order by ID limit
+       #{offet},#{limit};
+    </select>
+
+</mapper>

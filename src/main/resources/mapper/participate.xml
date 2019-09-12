@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.thomaschen.twoidea.dao.participateDao">
+
+    <!-- 插入数据-->
+    <insert id="addParticipate" keyColumn="ID">
+        insert into P_participation (personnelID,activityID,Achivements,Activity_time)
+        values (#{personnelid},#{activityid},#{Achivements},#{activityTime});
+    </insert>
+
+    <!-- 根据id删除参与者数据 -->
+    <delete id="deleteParticipate" parameterType="java.lang.Long">
+        delete from p_participation
+        where ID = #{id}
+--         ID > 0;
+    </delete>
+
+    <!-- 根据id查找参与者参与的活动 -->
+    <select id="queryByidOnparticipate" resultType="join_activity" parameterType="java.lang.Long">
+        select
+        p_participation.ID,
+        p_participation.personnelID,
+        p_participation.activityID,
+        p_participation.Achivements,
+        p_participation.Activity_time,
+        personnel.personnelID,
+        personnel.person_name,
+        personnel.IDcardNO,
+        personnel.sex,
+        personnel.telephone_number,
+        personnel.Email_address,
+        personnel.school_name,
+        personnel.address,
+        personnel.remarks_news,
+        activity.ID,
+        activity.activityID,
+        activity.activity_name,
+        activity.activity_type,
+        activity.functionaary,
+        activity.telephone_number,
+        activity.start_time,
+        activity.end_time,
+        activity.location
+        from (p_participation inner join personnel on p_participation.personnelID = personnel.personnelID) inner join activity on p_participation.activityID = activity.activityID
+        where p_participation.ID = #{id};
+    </select>
+
+    <!-- 根据偏移量查找活动参与者列表 -->
+    <select id="queryAllOnparticipate" resultType="join_activity">
+        select *
+        from p_participation
+        order by ID
+        limit #{offet},#{limit};
+
+        <!-- 此处的limit不知为何一定要 -->
+    </select>
+
+</mapper>

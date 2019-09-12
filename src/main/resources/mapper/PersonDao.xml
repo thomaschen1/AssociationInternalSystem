@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.thomaschen.twoidea.dao.PersonnelDao">
+
+    <resultMap id="BaseResultMap" type="cn.thomaschen.twoidea.entity.manage_people">
+
+        <id property="ID" column="personnelID" jdbcType="INTEGER"/>
+        <result property="name" column="person_name" jdbcType="VARCHAR"/>
+        <result property="IDcardNO" column="IDcardNO" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="VARCHAR"/>
+        <result property="phoneNumber" column="telephone_number" jdbcType="VARCHAR"/>
+        <result property="Emailaddress" column="Email_address" jdbcType="VARCHAR"/>
+        <result property="schoolName" column="school_name" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="remarks" column="remarks_news" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!-- 插入数据 -->
+    <insert id="addPersonnel">
+        insert into personnel(person_name,IDcardNO,sex,telephone_number,Email_address,school_name,address,remarks_news)
+        VALUES (#{name},#{IDcardNO},#{sex},#{PhoneNumber},#{Emailaddress},#{schoolName},#{address},#{remarks});
+    </insert>
+
+    <!-- 根据id删除数据 -->
+    <delete id="deletePersonnel" parameterType="java.lang.Long">
+        DELETE from personnel
+        WHERE personnelID = #{ID} and personnelID >0;
+    </delete>
+
+    <!-- 根据主键查询-->
+    <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select personnelID,person_name,IDcardNO,sex,telephone_number,Email_address,school_name,address,remarks_news
+        from personnel
+        where personnelID = #{ID};
+    </select>
+
+    <!-- 根据id查询人员列表 -->
+    <select id="queryAll" resultMap="BaseResultMap" resultType="manage_people">
+        select personnelID,person_name,IDcardNO,sex,telephone_number,Email_address,school_name,address,remarks_news
+        from personnel
+        order by personnelID
+        limit #{offet}, #{limit}
+    </select>
+
+</mapper>
